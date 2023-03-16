@@ -1,9 +1,11 @@
 # CSCI_4710_H4
 
 Group members:
-  - Riley Helner
-  - Garret Hope
-  - Ryon Gerringer
+  Riley Helner
+  
+  Garret Hope
+  
+  Ryon Gerringer
   
  Start by running Student_Vamp_MainScreen.html
  
