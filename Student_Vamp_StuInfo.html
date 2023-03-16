@@ -1,0 +1,108 @@
+<html lang="en"><head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  
+    <script type="text/javascript">
+      function output_user_info(){
+        // use this
+        document.getElementById('first_name').value;
+      }
+    </script>
+  </head>
+  <body>
+  
+  
+  <div class="container">
+    <h1 class="display-1">Human or Vampire?</h1>
+    <form>
+        <h3 class="text-muted">Input a new user below.</h3>
+        <hr>
+      <div class="form-row">
+        <!-- md is short for Medium, >= 768 px -->
+        <div class="form-group col-md-6">
+          <label for="first_name">First Name</label>
+          <!-- possible types:  text, password, datetime, datetime-local, date, month, time, week, number, email, url, search, tel, and color. -->
+          <input type="text" class="form-control" id="first_name" placeholder="First Name">
+          <!-- <input type="time" class="form-control" id="first_name" placeholder="First Name"> -->
+          <!-- <input type="color" class="form-control" id="first_name" placeholder="First Name"> -->
+        </div>
+  
+        <!-- The .form-group class is the easiest way to add some structure to forms. It provides a flexible class that encourages proper grouping of labels, controls, optional help text, and form validation messaging. -->
+        <div class="form-group col-md-3">
+            <div class="checkbox">
+                <label><input type="checkbox" id="garlic_checkbox">Garlic</label>
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox" id="shadow_checkbox">Shadow</label>
+            </div>
+        </div>
+  
+        <div class="form-group col-md-3">
+            <div class="checkbox">
+                <label><input type="checkbox" id="accent_checkbox">Accent</label>
+            </div>
+            <div class="checkbox">
+                <label><input type="checkbox" id="complexion_checkbox">Compexion of a Vampire</label>
+            </div>
+        </div>
+      </div>
+  
+
+  
+    </form>
+  
+    <!-- How to display all user input information as a paragraph? Finish the output_user_info function -->
+    <button class="btn btn-primary col-md-6" onclick="output_user_info()">Add User</button>
+    
+    
+    <div class="container">
+        
+        <table class="table table-bordered" id="saving_table">
+           <caption>Savings</caption>
+           <thead>
+             <tr>
+               <th>Month</th>
+               <th>Savings</th>
+             </tr>
+           </thead>
+           <tbody>
+             <tr>
+               <td>January</td>
+               <td>$100</td>
+             </tr>
+             <tr>
+               <td>February</td>
+               <td>$80</td>
+             </tr>
+           </tbody>
+           <tfoot>
+             <tr>
+               <td>Sum</td>
+               <td>$180</td>
+             </tr>
+           </tfoot>
+         </table>
+       
+       </div>
+       <hr>
+       <div class="form-group">
+        <label for="mySelect">Select Model Logic:</label>
+        <select class="form-control" id="mySelect">
+          <option value='1'>Random Guess</option>
+          <option value='2'>Threshold Based Method</option>
+          <option value='3'>Decision Tree</option>
+          <option value='4'>Neural Network</option>
+        </select>
+      </div>
+      <button class="btn btn-primary col-md-6" onclick="check_user_info()">Check who is a Vampire!</button>
+  </div>
+  
+  
+  
+  
+  </body>
+  </html>
