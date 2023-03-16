@@ -30,8 +30,18 @@
         }
 
 
-    // model of MVC
     
+    function add_results(result_data, num_human, num_vampire){
+        result_data.addColumn('string', 'Element');
+            result_data.addColumn('number', 'Count');
+            result_data.addRows([     
+                ['Human', num_human],
+                ['Vampire', num_vampire]
+            ]);
+            console.log(result_data);
+    }
+
+
     function classmate_data_processing(table_data, result_data, modelOption){
     // this function processes classmate data and creates data table
     var num_human = 0;
@@ -40,6 +50,7 @@
 
     if (modelOption == 1){
         // iterate over each row in the table
+        
         for (var i = 0; i < table_data.rows.length; i++) {
             var is_vampire = Math.random() < 0.5; // randomly determine if user is a vampire
 
@@ -49,18 +60,42 @@
             } else {
                 num_human++;
             }
-
-
         }
-        result_data.addColumn('string', 'Element');
-            result_data.addColumn('number', 'Count');
-            result_data.addRows([     
-                ['Human', num_human],
-                ['Vampire', num_vampire]
-            ]);
-            console.log(result_data);
+        add_results(result_data, num_human, num_vampire);
 
+        
     } 
+    else if (modelOption == 2){
+        for (var i = 0; i < table_data.rows.length; i++) {
+            var score = 0;
+            var shadow = (table_data.rows.item(i).cells[2].innerHTML === 'Yes') ? true : false;
+            var complex = (table_data.rows.item(i).cells[4].innerHTML === 'Yes') ? true : false;;
+            var garlic = (table_data.rows.item(i).cells[1].innerHTML === 'Yes') ? true : false;;
+
+            score += (shadow === true) ? 4 : 0;
+            score += (complex === true) ? 3 : 0;
+            score += (garlic === true) ? 3 : 0;
+            
+
+            
+
+
+            console.log(score);
+            
+            
+
+            // update the number of humans and vampires based on the result
+            if (score > 6) {
+                num_vampire++;
+            } else {
+                num_human++;
+            }
+        }
+        add_results(result_data, num_human, num_vampire);
+
+    }
+
+
 
 
     
