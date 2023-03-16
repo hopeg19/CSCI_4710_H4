@@ -68,13 +68,13 @@
     else if (modelOption == 2){
         for (var i = 0; i < table_data.rows.length; i++) {
             var score = 0;
-            var shadow = (table_data.rows.item(i).cells[2].innerHTML === 'Yes') ? true : false;
+            var noShadow = (table_data.rows.item(i).cells[2].innerHTML === 'No') ? true : false;
             var complex = (table_data.rows.item(i).cells[4].innerHTML === 'Yes') ? true : false;;
-            var garlic = (table_data.rows.item(i).cells[1].innerHTML === 'Yes') ? true : false;;
+            var hatesGarlic = (table_data.rows.item(i).cells[1].innerHTML === 'No') ? true : false;;
 
-            score += (shadow === true) ? 4 : 0;
+            score += (noShadow === true) ? 4 : 0;
             score += (complex === true) ? 3 : 0;
-            score += (garlic === true) ? 3 : 0;
+            score += (hatesGarlic === true) ? 3 : 0;
             
 
             
@@ -166,18 +166,18 @@
           </div>
           <div class="form-group col-md-3">
             <div class="checkbox">
-              <label><input type="checkbox" id="garlic_checkbox">Garlic</label>
+              <label><input type="checkbox" id="garlic_checkbox">Likes Garlic</label>
             </div>
             <div class="checkbox">
-              <label><input type="checkbox" id="shadow_checkbox">Shadow</label>
+              <label><input type="checkbox" id="shadow_checkbox">Casts Shadow</label>
             </div>
           </div>
           <div class="form-group col-md-3">
             <div class="checkbox">
-              <label><input type="checkbox" id="accent_checkbox">Accent</label>
+              <label><input type="checkbox" id="accent_checkbox">Has Accent</label>
             </div>
             <div class="checkbox">
-              <label><input type="checkbox" id="complexion_checkbox">Compexion of a Vampire</label>
+              <label><input type="checkbox" id="complexion_checkbox">Has Pale Compexion</label>
             </div>
           </div>
         </div>
@@ -190,10 +190,10 @@
         <thead>
           <tr>
             <th>First Name</th>
-            <th>Garlic</th>
-            <th>Shadow</th>
-            <th>Accent</th>
-            <th>Compexion of a Vampire</th>
+            <th>Likes Garlic</th>
+            <th>Casts Shadow</th>
+            <th>Has Accent</th>
+            <th>Has Pale Compexion</th>
           </tr>
         </thead>
         <tbody id="user_table">
@@ -243,6 +243,7 @@
         <option value='4'>Neural Network</option>
         </select>
       </div>
+      <hr>
       <div class="container">
       <div id="chart_div"></div>
     </div>
