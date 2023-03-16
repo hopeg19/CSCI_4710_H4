@@ -6,44 +6,116 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
   
     <script type="text/javascript">
-      function insert_user_info() {
-        // Get form data
-        var first_name = document.getElementById('first_name').value;
-        var garlic_checkbox = document.getElementById('garlic_checkbox').checked;
-        var shadow_checkbox = document.getElementById('shadow_checkbox').checked;
-        var accent_checkbox = document.getElementById('accent_checkbox').checked;
-        var complexion_checkbox = document.getElementById('complexion_checkbox').checked;
+        google.charts.load('current', {'packages':['corechart']});
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
         
-        // Create new table row
-        var row = document.createElement('tr');
+
+        function drawChart() {
+            var data = new google.visualization.DataTable();
+            var modelOption = document.getElementById('mySelect').value;
+            
+            classmate_data_processing(document.getElementById('user_table'), data, modelOption);
+
+            var options = {'title':'How many vampires in the class?',
+                        'width':400,
+                        'height':300};
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+
+
+    // model of MVC
+    
+    function classmate_data_processing(table_data, result_data, modelOption){
+    // this function processes classmate data and creates data table
+    var num_human = 0;
+    var num_vampire = 0;
+    console.log(modelOption);
+
+    if (modelOption == 1){
+        // iterate over each row in the table
+        for (var i = 0; i < table_data.rows.length; i++) {
+            var is_vampire = Math.random() < 0.5; // randomly determine if user is a vampire
+
+            // update the number of humans and vampires based on the result
+            if (is_vampire) {
+                num_vampire++;
+            } else {
+                num_human++;
+            }
+
+
+        }
+        result_data.addColumn('string', 'Element');
+            result_data.addColumn('number', 'Count');
+            result_data.addRows([     
+                ['Human', num_human],
+                ['Vampire', num_vampire]
+            ]);
+            console.log(result_data);
+
+    } 
+
+
+    
+    // update the chart title to reflect the number of vampires and humans
+    var chart_title = 'Class makeup: ' + num_human + ' humans and ' + num_vampire + ' vampires';
+    result_data.setTableProperty('title', chart_title);
+}
         
-        // Add columns to row
-        var name_col = document.createElement('td');
-        name_col.textContent = first_name;
-        row.appendChild(name_col);
-        
-        var garlic_col = document.createElement('td');
-        garlic_col.textContent = garlic_checkbox ? "Yes" : "No";
-        row.appendChild(garlic_col);
-        
-        var shadow_col = document.createElement('td');
-        shadow_col.textContent = shadow_checkbox ? "Yes" : "No";
-        row.appendChild(shadow_col);
-        
-        var accent_col = document.createElement('td');
-        accent_col.textContent = accent_checkbox ? "Yes" : "No";
-        row.appendChild(accent_col);
-        
-        var complexion_col = document.createElement('td');
-        complexion_col.textContent = complexion_checkbox ? "Yes" : "No";
-        row.appendChild(complexion_col);
-        
-        // Add row to table
-        var table = document.getElementById('user_table');
-        table.appendChild(row);
-      }
+
+
+
+
+
+
+
+
+        function insert_user_info() {
+            // Get form data
+            var first_name = document.getElementById('first_name').value;
+            var garlic_checkbox = document.getElementById('garlic_checkbox').checked;
+            var shadow_checkbox = document.getElementById('shadow_checkbox').checked;
+            var accent_checkbox = document.getElementById('accent_checkbox').checked;
+            var complexion_checkbox = document.getElementById('complexion_checkbox').checked;
+            
+            // Create new table row
+            var row = document.createElement('tr');
+            
+            // Add columns to row
+            var name_col = document.createElement('td');
+            name_col.textContent = first_name;
+            row.appendChild(name_col);
+            
+            var garlic_col = document.createElement('td');
+            garlic_col.textContent = garlic_checkbox ? "Yes" : "No";
+            row.appendChild(garlic_col);
+            
+            var shadow_col = document.createElement('td');
+            shadow_col.textContent = shadow_checkbox ? "Yes" : "No";
+            row.appendChild(shadow_col);
+            
+            var accent_col = document.createElement('td');
+            accent_col.textContent = accent_checkbox ? "Yes" : "No";
+            row.appendChild(accent_col);
+            
+            var complexion_col = document.createElement('td');
+            complexion_col.textContent = complexion_checkbox ? "Yes" : "No";
+            row.appendChild(complexion_col);
+            
+            // Add row to table
+            var table = document.getElementById('user_table');
+            table.appendChild(row);
+
+            drawChart();
+        }
+
     </script>
   </head>
   <body>
@@ -129,13 +201,17 @@
       </table>
       <div class="form-group">
         <label for="mySelect">Select Model Logic:</label>
-        <select class="form-control" id="mySelect">
+        <select class="form-control" id="mySelect" onchange="drawChart()">
         <option value='1'>Random Guess</option>
         <option value='2'>Threshold Based Method</option>
         <option value='3'>Decision Tree</option>
         <option value='4'>Neural Network</option>
         </select>
       </div>
+      <div class="container">
+      <div id="chart_div"></div>
+    </div>
+
     </div>
     
 </body>
