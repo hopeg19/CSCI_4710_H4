@@ -1,191 +1,133 @@
-if( JSON.parse(localStorage.getItem("list")) == null){
-    var list = new Array();
- }else{
-     var list = JSON.parse(localStorage.getItem("list"));
-    
- }
- 
- var num_vampire;
- var num_humans;
- 
- 
-     function random(){
-         var num = Math.floor(Math.random() * 101);
-         if (num < 50){
-            
-             return true;
-         }
-         else{
-             
-             return false;}
-     }
-     
-     function threshold(garlic,shadow,pale){
-         
-         var thresh = 0;
-         if(shadow){
-             thresh += 4;
-         }if(garlic){
-             thresh += 3;
-         }if(pale){
-             thresh += 3;
-         }if(thresh > 6){
-             
-             return true;
-         }
-          else{
-           
-             return false;
-         }
-         
-         
-     }
-    
- 
-     function addClassmate(){
-         var form = document.getElementById('adding');
-         var fName = document.getElementById('fname').value.toString();
-         var lName = document.getElementById('lname').value.toString();
-         var garlic = document.getElementById('garlic').checked;
-         var shadow = document.getElementById('shadow').checked;
-         var pale = document.getElementById('pale').checked;
-         var vampire = false;
-         var x = document.getElementById('mySelect').selectedIndex;
-         var y = document.getElementById('mySelect').options;
-         
-         if(y[x].text == "Threshold Based Method"){
-             vampire = threshold(garlic,shadow,pale);
-            
-         }else{
-             vampire = random();
-            
-         }
-         var person = {firstname: fName, lastname: lName, noGarlic: garlic, noShadow: shadow, isPale: pale, isVampire: vampire };
-         list.push(person);
-         localStorage.setItem("list", JSON.stringify(list));
-         addToTable(person);
-         form.reset();
-         
-     
-         
-     }
-    
-     function count(){
-         
-         var userList = JSON.parse(localStorage.getItem("list")); // Retrieving
-         var vamps = 0;
-         var human = 0;
-         for(var i = 0; i <= userList.length -1 ; i++){
-             if(userList[i].isVampire){
-                 vamps++;
-             }else{human++;}
-         }
-         num_humans = human;
-         num_vampire = vamps;
-         
-         
-     }
- 
- 
-     //Load the Visualization API and the corechart package
-         google.charts.load('current', {'packages':['corechart']});
- 
-         //Set a callback to run when the Google Visualization API is loaded
-         google.charts.setOnLoadCallback(drawChart); 
- 
-         var chart;
-         var data;
-         var options;
-         
- 
-         //TODO: loop for getting the number from list for humans and vampire
-         
- 
-         function drawChart() {
-             count();
- 
-             // Create the data table
-             data = new google.visualization.DataTable();
-             data.addColumn('string', 'Element');
-             data.addColumn('number', 'Number');
-             data.addRows([
-                 ['Human', num_humans],
-                 ['Vampire', num_vampire]
-             ]);
- 
-             //Set chart options
-             options = {'title': 'How many vampires in the class',
-                                     'width': 400,
-                                     'height': 300};
- 
-             chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-             
-             chart.draw(data, options);
-            
- 
-         }
- 
- //This doeasnt work... I dont think we need it though.
- 
+google.charts.load('current', {'packages':['corechart']});
 
- function populateTable() {
-         var table = document.getElementById("users");
-         var users = JSON.parse(localStorage.getItem("list")); // Retrieving
-         if(users == null){
-             return;
-         }else{
-             //TABLE ROWS
-             for (i = 0; i < users.length; i++) {
-                 
-                 var row = table.insertRow(i +1);
-                 var cell1 = row.insertCell(0);
-                 cell1.innerHTML = users[i].firstname;
-                 
-                 var cell2 = row.insertCell(1);
-                 cell2.innerHTML = users[i].lastname;
-               
-                 var cell3 = row.insertCell(2);
-                 cell3.innerHTML = users[i].noGarlic;
-             
-                 var cell4 = row.insertCell(3);
-                 cell4.innerHTML = users[i].noShadow;
-                
-                 var cell5 = row.insertCell(4);
-                 cell5.innerHTML = users[i].isPale;
-         
-                 var cell6 = row.insertCell(5);
-                 cell6.innerHTML = users[i].isVampire;
-                 
+// Set a callback to run when the Google Visualization API is loaded.
+google.charts.setOnLoadCallback(drawChart);
+
+
+function drawChart() {
+    var data = new google.visualization.DataTable();
+    var modelOption = document.getElementById('mySelect').value;
+    
+    classmate_data_processing(document.getElementById('user_table'), data, modelOption);
+
+    var options = {'title':'How many vampires in the class?',
+                'width':400,
+                'height':300};
+    var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+}
+
+
+    
+function add_results(result_data, num_human, num_vampire){
+    result_data.addColumn('string', 'Element');
+        result_data.addColumn('number', 'Count');
+        result_data.addRows([     
+            ['Human', num_human],
+            ['Vampire', num_vampire]
+        ]);
+        console.log(result_data);
+}
+
+
+function classmate_data_processing(table_data, result_data, modelOption){
+    // this function processes classmate data and creates data table
+    var num_human = 0;
+    var num_vampire = 0;
+    console.log(modelOption);
+
+    if (modelOption == 1){
+        // iterate over each row in the table
+        
+        for (var i = 0; i < table_data.rows.length; i++) {
+            var is_vampire = Math.random() < 0.5; // randomly determine if user is a vampire
+
+            // update the number of humans and vampires based on the result
+            if (is_vampire) {
+                num_vampire++;
+            } else {
+                num_human++;
+            }
+        }
+        add_results(result_data, num_human, num_vampire);
+
+        
+    } 
+    else if (modelOption == 2){
+        for (var i = 0; i < table_data.rows.length; i++) {
+            var score = 0;
+            var noShadow = (table_data.rows.item(i).cells[2].innerHTML === 'No') ? true : false;
+            var complex = (table_data.rows.item(i).cells[4].innerHTML === 'Yes') ? true : false;;
+            var hatesGarlic = (table_data.rows.item(i).cells[1].innerHTML === 'No') ? true : false;;
+
+            score += (noShadow === true) ? 4 : 0;
+            score += (complex === true) ? 3 : 0;
+            score += (hatesGarlic === true) ? 3 : 0;
             
-                 
-             }
-         }
- 
-             
- 
- 
-         }
- 
- function addToTable(newPerson){
-     var table = document.getElementById("users");
-     var index = table.rows.length;
-     var row = table.insertRow(index);
-     var cell1 = row.insertCell(0);
-     cell1.innerHTML = newPerson.firstname;
-                 
-     var cell2 = row.insertCell(1);
-     cell2.innerHTML = newPerson.lastname;
-               
-     var cell3 = row.insertCell(2);
-     cell3.innerHTML = newPerson.noGarlic;
-             
-     var cell4 = row.insertCell(3);
-     cell4.innerHTML = newPerson.noShadow;
-                
-     var cell5 = row.insertCell(4);
-     cell5.innerHTML = newPerson.isPale;
-         
-     var cell6 = row.insertCell(5);
-     cell6.innerHTML = newPerson.isVampire;
-                 
- }
+            console.log(score);
+            // update the number of humans and vampires based on the result
+            if (score > 6) {
+                num_vampire++;
+            } else {
+                num_human++;
+            }
+        }
+        add_results(result_data, num_human, num_vampire);
+
+    }
+
+
+
+
+    
+    // update the chart title to reflect the number of vampires and humans
+    var chart_title = 'Class makeup: ' + num_human + ' humans and ' + num_vampire + ' vampires';
+    result_data.setTableProperty('title', chart_title);
+}
+        
+
+
+
+
+
+
+
+
+function insert_user_info() {
+    // Get form data
+    var first_name = document.getElementById('first_name').value;
+    var garlic_checkbox = document.getElementById('garlic_checkbox').checked;
+    var shadow_checkbox = document.getElementById('shadow_checkbox').checked;
+    var accent_checkbox = document.getElementById('accent_checkbox').checked;
+    var complexion_checkbox = document.getElementById('complexion_checkbox').checked;
+    
+    // Create new table row
+    var row = document.createElement('tr');
+    
+    // Add columns to row
+    var name_col = document.createElement('td');
+    name_col.textContent = first_name;
+    row.appendChild(name_col);
+    
+    var garlic_col = document.createElement('td');
+    garlic_col.textContent = garlic_checkbox ? "Yes" : "No";
+    row.appendChild(garlic_col);
+    
+    var shadow_col = document.createElement('td');
+    shadow_col.textContent = shadow_checkbox ? "Yes" : "No";
+    row.appendChild(shadow_col);
+    
+    var accent_col = document.createElement('td');
+    accent_col.textContent = accent_checkbox ? "Yes" : "No";
+    row.appendChild(accent_col);
+    
+    var complexion_col = document.createElement('td');
+    complexion_col.textContent = complexion_checkbox ? "Yes" : "No";
+    row.appendChild(complexion_col);
+    
+    // Add row to table
+    var table = document.getElementById('user_table');
+    table.appendChild(row);
+
+    drawChart();
+}
