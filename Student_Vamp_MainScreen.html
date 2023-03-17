@@ -17,7 +17,7 @@
     
     .button1 {background-color: black;}
     
-    .button1:hover:not(.active){
+    .button:hover:{
       background-color: red;
       color: white;
     }
@@ -30,40 +30,7 @@ h1{
 text-align: center;
 }
 
-ul {
-			  list-style-type: none;
-			  margin: 0;
-			  padding: 0;
-			  overflow: hidden;
-			  background-color: #9999ff;
-			}
 
-			li {
-				
-			  float: left;
-			}
-
-			li a {
-				
-			  display: block;
-			  color: white;
-			  /*text-align: center;*/
-			  /*14px up and down, 16 px left and right*/
-			  padding: 14px 16px;
-			  /*default style includes an ugly underline*/
-			  text-decoration: none;
-			}
-
-li a.active{
-/*temporary color*/
-background-color: #9966ff;
-color white;
-}
-
-li a:hover:not(.active){
-background-color: #3399ff;
-color: white;
-}
 		</style>
 </head>
 <body>
@@ -73,14 +40,14 @@ Student Vampire Detector
 </h1>
 
 <p>
-	<form action = "Student_Vamp_StuInfo.html">
-<button href = "Student_Vamp_StuInfo.html button1">Student Vampire Detector</button>
-	</form>
+	
+<button onclick="window.location.href = 'Student_Vamp_StuInfo.html';">Student Vampire Detector</button>
+	
 	</p>
 <p>
-	<form action = "Student_Vamp_Authors.html">
-<button href = "Student_Vamp_Authors.html button1">Authors</button>
-	</form>
+	
+<button onclick="window.location.href = 'Student_Vamp_Authors.html';">Authors</button>
+	
 	</p>
 
 
